@@ -3,23 +3,23 @@ import random
 
 # Import of local modules
 from Models.rvGA_model.functions import individualCreator, \
-                                            oneMaxFitness, \
-                                                    clone, \
-                                            selTournament, \
-                                               cxOnePoint, \
-                                               mutFlipBit
+                                        oneMaxFitness, \
+                                        clone, \
+                                        selTournament, \
+                                        cxOnePoint, \
+                                        mutFlipBit
 
 from Models.rvGA_model.model_variables import population_size, \
-                                                   max_length, \
+                                              max_length, \
                                               max_generations, \
-                                               prob_crossover, \
-                                                prob_mutation
+                                              prob_crossover, \
+                                              prob_mutation
 
 # Definition of population creator
 
 
 def population_creator(n=0):
-    return list([individualCreator() for i in range(n)])
+    return list([individualCreator() for _ in range(n)])
 
 
 population = population_creator(n=population_size)
