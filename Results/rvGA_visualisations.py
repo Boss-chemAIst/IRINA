@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from Models.rvGA_model.run_ga_model import max_fitness_values, mean_fitness_values
+from Models.rvGA_model.run_rvga_model import max_fitness_values, mean_fitness_values
 
 
 plt.plot(max_fitness_values, color="red")

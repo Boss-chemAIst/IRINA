@@ -1,7 +1,7 @@
 import random
 
-from Models.rvGA_model.object_classes import *
-from Models.rvGA_model.model_variables import max_length
+from Models.rvGA_model.rvga_classes import *
+from Models.rvGA_model.rvga_variables import max_length
 
 
 def generate_individual():

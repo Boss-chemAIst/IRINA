@@ -2,14 +2,14 @@
 import random
 
 # Import of local modules
-from Models.rvGA_model.functions import generate_individual, \
+from Models.rvGA_model.rvga_functions import generate_individual, \
                                         individual_fitness, \
                                         clone, \
                                         conduct_tournament, \
                                         make_crossover, \
                                         make_mutation
 
-from Models.rvGA_model.model_variables import population_size, \
+from Models.rvGA_model.rvga_variables import population_size, \
                                               max_length, \
                                               max_generations, \
                                               prob_crossover, \
