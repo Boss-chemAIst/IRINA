@@ -1,11 +1,29 @@
 import random
+import numpy as np
 
 from Models.rvGA_model.rvga_classes import *
-from Models.rvGA_model.rvga_variables import max_length
 
 
-def generate_individual():
-    return Individual([random.randint(0, 1) for _ in range(max_length)])
+def generate_individual(latent_vectors_df, latent_vector_length) -> object:
+    """
+
+    :param latent_vector_length: vector length out of VAE
+    :param latent_vectors_df: N-dimensional vectors for M target meshes (M columns).
+    :return: Individual object (N-dimensional vector).
+
+    """
+
+    mean_values = latent_vectors_df.mean(axis=1).tolist()
+    std_values = latent_vectors_df.std(axis=1).tolist()
+
+    int_vector = []
+    for N in range(latent_vector_length):
+        distribution_lower_bound = mean_values[N] - 1.5*std_values[N]
+        distribution_higher_bound = mean_values[N] + 1.5*std_values[N]
+        gene_value = random.uniform(distribution_lower_bound, distribution_higher_bound)
+        int_vector.append(gene_value)
+
+    return Individual(int_vector)
 
 
 def generate_population(n=0):

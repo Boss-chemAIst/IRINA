@@ -7,10 +7,11 @@ from Models.rvGA_model.rvga_functions import generate_individual, \
                                         clone, \
                                         conduct_tournament, \
                                         make_crossover, \
-                                        make_mutation
+                                        make_mutation, \
+                                        generate_population
 
 from Models.rvGA_model.rvga_variables import population_size, \
-                                              max_length, \
+                                              latent_vector_length, \
                                               max_generations, \
                                               prob_crossover, \
                                               prob_mutation
@@ -18,11 +19,7 @@ from Models.rvGA_model.rvga_variables import population_size, \
 # Definition of population creator
 
 
-def population_creator(n=0):
-    return list([generate_individual() for _ in range(n)])
-
-
-population = population_creator(n=population_size)
+population = generate_population(n=population_size)
 generation_count = 0
 
 # Generate fitness values for every individual
@@ -43,7 +40,7 @@ fitness_values = [individual.fitness.values[0] for individual in population]
 
 total_individuals = population_size
 
-while max(fitness_values) < max_length and generation_count < max_generations:
+while max(fitness_values) < latent_vector_length and generation_count < max_generations:
     generation_count += 1
     offspring = conduct_tournament(population, len(population))
     total_individuals += len(offspring)
@@ -55,7 +52,7 @@ while max(fitness_values) < max_length and generation_count < max_generations:
 
     for mutant in offspring:
         if random.random() < prob_mutation:
-            make_mutation(mutant, ind_prob=1.0/max_length)
+            make_mutation(mutant, ind_prob=1.0 / latent_vector_length)
 
     freshFitnessValues = list(map(individual_fitness, offspring))
     for individual, fitness_value in zip(offspring, freshFitnessValues):

@@ -144,3 +144,9 @@ ones_list = np.loadtxt("ones.txt").reshape(7877, 16)
 zeros_list = pd.DataFrame(zeros_list)
 ones_list = pd.DataFrame(ones_list)
 '''
+
+'''
+Outputs:
+1) NxM dataframe (N genes of latent vector; M points or number of target meshes): to generate each gene value.
+2) N vector (variances of N genes): to set the importance of each gene.
+'''

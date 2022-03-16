@@ -1,7 +1,7 @@
 import random
 
 # Definition of rvGA model parameters
-max_length = 100
+latent_vector_length = 100
 population_size = 25
 max_generations = 50
 random_seed = 2022
