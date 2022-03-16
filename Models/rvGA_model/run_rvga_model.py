@@ -3,8 +3,7 @@ import random
 
 
 # Import of local rvGA parameters
-from Models.rvGA_model.rvga_functions import generate_individual, \
-    individual_fitness, \
+from Models.rvGA_model.rvga_functions import individual_fitness, \
     clone, \
     conduct_tournament, \
     make_crossover, \

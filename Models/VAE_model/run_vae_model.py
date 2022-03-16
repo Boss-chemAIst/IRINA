@@ -5,9 +5,7 @@ from keras.layers import Conv2D, Flatten, Lambda
 from keras.layers import Reshape, Conv2DTranspose
 from keras import backend as K
 from keras.losses import binary_crossentropy
-import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import pickle
 
 from Processing.mesh_preprocessing import x_test, x_train, y_test, y_train
