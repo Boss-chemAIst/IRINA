@@ -150,3 +150,6 @@ Outputs:
 1) NxM dataframe (N genes of latent vector; M points or number of target meshes): to generate each gene value.
 2) N vector (variances of N genes): to set the importance of each gene.
 '''
+
+vae_latent_vector_df = None
+vae_latent_vector_length = 0
