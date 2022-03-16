@@ -9,8 +9,10 @@ def generate_individual(latent_vectors_df, latent_vector_length) -> object:
 
     :param latent_vector_length: vector length out of VAE
     :param latent_vectors_df: N-dimensional vectors for M target meshes (M columns).
+
     :return: Individual object (N-dimensional vector).
 
+    Status: FINISHED
     """
 
     mean_values = latent_vectors_df.mean(axis=1).tolist()
@@ -26,8 +28,21 @@ def generate_individual(latent_vectors_df, latent_vector_length) -> object:
     return Individual(int_vector)
 
 
-def generate_population(n=0):
-    return list([generate_individual() for _ in range(n)])
+def generate_population(latent_vectors_df=None,
+                        latent_vector_length=0,
+                        population_size=0):
+    """
+
+    :param latent_vectors_df: Scalar. Vector length out of VAE.
+    :param latent_vector_length: DataFrame. N-dimensional vectors for M target meshes (M columns).
+    :param population_size: Scalar. Number of individuals to be generated.
+
+    :return: List of lists with the number of individuals equal to population size.
+
+    Status: FINISHED
+
+    """
+    return list([generate_individual(latent_vectors_df, latent_vector_length) for _ in range(population_size)])
 
 
 def individual_fitness(individual):

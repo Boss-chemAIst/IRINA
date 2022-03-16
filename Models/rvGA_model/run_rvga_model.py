@@ -3,23 +3,25 @@ import random
 
 # Import of local modules
 from Models.rvGA_model.rvga_functions import generate_individual, \
-                                        individual_fitness, \
-                                        clone, \
-                                        conduct_tournament, \
-                                        make_crossover, \
-                                        make_mutation, \
-                                        generate_population
+    individual_fitness, \
+    clone, \
+    conduct_tournament, \
+    make_crossover, \
+    make_mutation, \
+    generate_population
 
 from Models.rvGA_model.rvga_variables import population_size, \
-                                              latent_vector_length, \
-                                              max_generations, \
-                                              prob_crossover, \
-                                              prob_mutation
+    latent_vector_length, \
+    max_generations, \
+    prob_crossover, \
+    prob_mutation
 
-# Definition of population creator
+# Definition of population creator, working based on the data from VAE
 
 
-population = generate_population(n=population_size)
+population = generate_population(latent_vectors_df=None,
+                                 latent_vector_length=None,
+                                 population_size=population_size)
 generation_count = 0
 
 # Generate fitness values for every individual
