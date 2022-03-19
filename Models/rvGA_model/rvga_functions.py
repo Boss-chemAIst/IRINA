@@ -42,10 +42,21 @@ def generate_population(latent_vectors_df=None,
     Status: FINISHED
 
     """
+
     return list([generate_individual(latent_vectors_df, latent_vector_length) for _ in range(population_size)])
 
 
 def individual_fitness(individual):
+    """
+
+    :param individual: Vector of genes of a single individual. Sent to VAE to reconstruct COMSOL-readable geometry.
+
+    :return: Metrics of individual's spectrum proximity to the desired one (goes from COMSOL simulation).
+
+    Status: NOT STARTED
+
+    """
+
     return sum(individual),
 
 
@@ -56,9 +67,10 @@ def gene_importance(latent_vectors_df):
 
     :return: List of genes' importance (min variance / gene variance).
 
-    Status: IN PROGRESS
+    Status: FINISHED
 
     """
+
     gene_standard_deviation = latent_vectors_df.std(axis=1)
     gene_standard_deviation_list = gene_standard_deviation.tolist()
     gene_importance_list = np.min(gene_standard_deviation_list) / gene_standard_deviation_list
