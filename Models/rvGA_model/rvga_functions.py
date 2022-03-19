@@ -49,8 +49,20 @@ def individual_fitness(individual):
     return sum(individual),
 
 
-def gene_importance():
-    pass
+def gene_importance(latent_vectors_df):
+    """
+
+    :param latent_vectors_df: Scalar. Vector length out of VAE.
+
+    :return: List of genes' importance (min variance / gene variance).
+
+    Status: IN PROGRESS
+
+    """
+    gene_standard_deviation = latent_vectors_df.std(axis=1)
+    gene_standard_deviation_list = gene_standard_deviation.tolist()
+    gene_importance_list = np.min(gene_standard_deviation_list) / gene_standard_deviation_list
+    return gene_importance_list
 
 
 def mating():
