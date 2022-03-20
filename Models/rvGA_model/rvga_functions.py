@@ -60,9 +60,10 @@ def individual_fitness(individual):
     return sum(individual),
 
 
-def gene_importance(latent_vectors_df):
+def gene_importance_correction(latent_vectors_df, max_mutation_increase):
     """
 
+    :param max_mutation_increase: Stands for N in N-fold increased mutation rate for the least important gene.
     :param latent_vectors_df: Scalar. Vector length out of VAE.
 
     :return: List of genes' importance (min variance / gene variance).
@@ -72,10 +73,17 @@ def gene_importance(latent_vectors_df):
     """
 
     gene_standard_deviation = latent_vectors_df.std(axis=1)
-    gene_standard_deviation_list = gene_standard_deviation.tolist()
-    gene_importance_list = np.min(gene_standard_deviation_list) / gene_standard_deviation_list
 
-    return gene_importance_list.tolist()
+    gene_importance_relative = np.min(gene_standard_deviation) / gene_standard_deviation
+    data = gene_importance_relative.tolist()
+
+    data_range = np.max(data) - np.min(data)
+    data_norm = [(i - np.min(data)) / data_range for i in data]
+
+    custom_range = 1 - (1 / max_mutation_increase)
+    gene_importance_corr = (np.array(data_norm) * custom_range) + (1 / max_mutation_increase)
+
+    return gene_importance_corr.tolist()
 
 
 def mating():
