@@ -121,7 +121,18 @@ def conduct_tournament(population, population_length, survival_rate):
     return offspring
 
 
-def clone(value):
-    ind = Individual(value[:])
-    ind.fitness.values[0] = value.fitness.values[0]
+def clone(individual):
+    """
+
+    :param individual: Individual, which fitness values will be transferred to the same individual in the next
+    generation.
+
+    :return: Individual with written fitness value.
+
+    Status: FINISHED
+
+    """
+
+    ind = Individual(individual[:])
+    ind.fitness.values[0] = individual.fitness.values[0]
     return ind
