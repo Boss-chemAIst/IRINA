@@ -23,7 +23,7 @@ max_mutation_increase = 2
 
 test_dataframe_1 = pd.DataFrame(np.random.uniform(variance_lower_bound, variance_higher_bound, [N_test, M_test]))
 gene_importance_test = gene_importance_correction(latent_vectors_df=test_dataframe_1,
-                                                  max_mutation_increase=max_mutation_increase)
+                                                  max_diff_in_mating=max_mutation_increase)
 
 assert len(gene_importance_test) == latent_vector_length
 assert all(0 < element <= 1 for element in gene_importance_test) is True

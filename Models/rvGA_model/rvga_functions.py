@@ -1,10 +1,12 @@
 import random
 import numpy as np
 
+from Models.VAE_model.run_vae_model import vae_latent_vector_length
 from Models.rvGA_model.rvga_classes import *
 
 
-def generate_individual(latent_vectors_df, latent_vector_length) -> object:
+def generate_individual(latent_vectors_df,
+                        latent_vector_length) -> object:
     """
 
     Generates a single individual based on gene variations.
@@ -66,13 +68,14 @@ def individual_fitness(individual):
     return sum(individual),
 
 
-def gene_importance_correction(latent_vectors_df, max_mutation_increase):
+def gene_importance_correction(latent_vectors_df,
+                               max_diff_in_mating):
     """
 
     Based on the VAE model results, grades every individual's gene by importance correlating with its standard
     deviation.
 
-    :param max_mutation_increase: Stands for N in N-fold increased mutation rate for the least important gene.
+    :param max_diff_in_mating: Stands for N in N-fold increased mutation rate for the least important gene.
     :param latent_vectors_df: Scalar. Vector length out of VAE.
 
     :return: List of genes' importance (min variance / gene variance).
@@ -89,62 +92,85 @@ def gene_importance_correction(latent_vectors_df, max_mutation_increase):
     data_range = np.max(data) - np.min(data)
     data_norm = [(i - np.min(data)) / data_range for i in data]
 
-    custom_range = 1 - (1 / max_mutation_increase)
-    gene_importance_corr = (np.array(data_norm) * custom_range) + (1 / max_mutation_increase)
+    custom_range = 1 - (1 / max_diff_in_mating)
+    gene_importance_corr = (np.array(data_norm) * custom_range) + (1 / max_diff_in_mating)
 
     return gene_importance_corr.tolist()
 
 
-def mating(population):
+def gene_boundaries_calculation(latent_vectors_df, latent_vector_length):
     """
 
-    Implements crossovers within the population and mutates the offspring.
+    :param latent_vector_length:
+    :param latent_vectors_df:
 
-    :param population: Population to produce next generation.
+    :return: List of lists with 2 element-long lists for each gene representing lower (index 0) and higher (index 1)
+    boundaries.
 
-    :return: Mutated offspring.
-
-    Status: NOT STARTED
+    Status: IN PROGRESS
 
     """
 
+    mean_values = latent_vectors_df.mean(axis=1).tolist()
+    std_values = latent_vectors_df.std(axis=1).tolist()
 
-def make_crossover(parent1, parent2):
+    genes_boundaries = []
+
+    for N in range(latent_vector_length):
+
+        single_gene_boundaries = []
+
+        lower_boundary = mean_values[N] - 1.5 * std_values[N]
+        higher_boundary = mean_values[N] + 1.5 * std_values[N]
+
+        single_gene_boundaries.append(lower_boundary)
+        single_gene_boundaries.append(higher_boundary)
+
+        genes_boundaries.append(single_gene_boundaries)
+
+    return genes_boundaries
+
+
+def make_crossover(parent1,
+                   parent2,
+                   gene_importance=[1.] * vae_latent_vector_length):
     """
 
     Implements crossover between two parent individuals.
 
-    :param parent1: Individual (first parent).
-    :param parent2: Individual (second parent).
+    :param gene_importance: List. Importance of every single gene in the individual.
+    :param parent1: Object. Individual (first parent).
+    :param parent2: Object. Individual (second parent).
 
-    :return: Two child.
+    :return: No return. Makes change to the initial parents.
 
     Status: NOT STARTED
 
     """
-
-    child1, child2 = [], []
-
-    return child1, child2
+    gene_importance = []
 
 
-def make_mutation(mutant, ind_prob=0.01):
+def make_mutation(mutant, gene_importance, gene_boundaries, ind_prob=0.01):
     """
 
     Introduces mutations to the offspring depending on the gene importance.
 
+    :param gene_boundaries:
     :param mutant: Individual to be mutated.
+    :param gene_importance: List. Importance of every single gene in the individual.
     :param ind_prob: Standard probability of mutation.
 
     :return: Mutant individual.
 
-    Status: NOT STARTED
+    Status: IN PROGRESS
 
     """
 
-    for index in range(len(mutant)):
-        if random.random() < ind_prob:
-            mutant[index] = 0 if mutant[index] == 1 else 1
+    mutation_probability = ind_prob / gene_importance
+
+    for mutant_gene, mutation_prob in zip(mutant, mutation_probability):
+        if random.random() < mutation_prob:
+            pass
 
 
 def conduct_tournament(population, population_length, survival_rate):
