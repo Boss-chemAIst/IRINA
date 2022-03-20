@@ -31,9 +31,9 @@ def generate_individual(latent_vectors_df,
     return Individual(int_vector)
 
 
-def generate_population(latent_vectors_df=None,
-                        latent_vector_length=0,
-                        population_size=0):
+def generate_population(latent_vectors_df,
+                        latent_vector_length,
+                        population_size):
     """
 
     Generates population of individuals of fixed size based on variations in genes.
@@ -106,7 +106,7 @@ def gene_boundaries_calculation(latent_vectors_df, latent_vector_length):
     :return: List of lists with 2 element-long lists for each gene representing lower (index 0) and higher (index 1)
     boundaries.
 
-    Status: IN PROGRESS
+    Status: FINISHED
 
     """
 
@@ -132,21 +132,26 @@ def gene_boundaries_calculation(latent_vectors_df, latent_vector_length):
 
 def make_crossover(parent1,
                    parent2,
-                   gene_importance):
+                   gene_importance,
+                   crossover_rate):
     """
 
     Implements crossover between two parent individuals.
 
+    :param crossover_rate: Probability of crossover (in %)
     :param gene_importance: List. Importance of every single gene in the individual.
     :param parent1: Object. Individual (first parent).
     :param parent2: Object. Individual (second parent).
 
     :return: No return. Makes change to the initial parents.
 
-    Status: NOT STARTED
+    Status: FINISHED
 
     """
-    gene_importance = []
+
+    for gene in range(len(parent1)):
+        if random.random() < (crossover_rate * gene_importance[gene] / 100):
+            parent1[gene], parent2[gene] = parent2[gene], parent1[gene]
 
 
 def make_mutation(mutant, gene_importance, gene_boundaries, ind_prob=0.01):

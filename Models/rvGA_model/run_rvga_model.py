@@ -60,6 +60,7 @@ max_generations = max_generations  # maximal number of generations (typically fr
 percentage_of_survived = percentage_of_survived  # percentage of individuals surviving the tournament (in %)
 spectrum_proximity_percentage = 90  # preciseness of spectrum reconstruction to be achieved (in %)
 max_diff_in_mating = 2  # Stands for N in N-fold increased mutation/crossover rate for the least important gene
+crossover_rate = 50  # Probability of crossover (in %)
 
 # Gene importance calculation
 gene_importance = gene_importance_correction(latent_vectors_df=vae_latent_vector_df,
@@ -93,7 +94,8 @@ while max(fitness_values) < (spectrum_proximity_percentage / 100) and generation
         if random.random() < prob_crossover:
             make_crossover(parent1=child1,
                            parent2=child2,
-                           gene_importance=gene_importance)
+                           gene_importance=gene_importance,
+                           crossover_rate=crossover_rate)
 
     # Introduces mutations to the individuals in the offspring
     for mutant in offspring:
