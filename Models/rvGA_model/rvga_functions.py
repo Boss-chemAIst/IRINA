@@ -109,9 +109,10 @@ def conduct_tournament(population, population_length, survival_rate):
     """
 
     offspring = []
-    while len(offspring) < np.floor(population_length * survival_rate):
+    while len(offspring) <= np.floor(population_length * survival_rate):
 
-        best = max(population, key=lambda ind: ind.fitness.values[0])
+        fitness_values = [ind.fitness.values[0] for ind in population]
+        best = population[fitness_values.index(max(fitness_values))]
         offspring.append(best)
 
         best_index = population.index(best)
