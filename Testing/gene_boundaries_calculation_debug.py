@@ -23,3 +23,6 @@ test_dataframe_1 = pd.DataFrame(np.random.uniform(variance_lower_bound, variance
 
 gene_boundaries = gene_boundaries_calculation(latent_vectors_df=test_dataframe_1,
                                               latent_vector_length=latent_vector_length)
+
+assert len(gene_boundaries) == latent_vector_length
+assert len(gene_boundaries[0]) == 2

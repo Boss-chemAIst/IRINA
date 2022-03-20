@@ -1,7 +1,6 @@
 import random
 import numpy as np
 
-from Models.VAE_model.run_vae_model import vae_latent_vector_length
 from Models.rvGA_model.rvga_classes import *
 
 
@@ -133,7 +132,7 @@ def gene_boundaries_calculation(latent_vectors_df, latent_vector_length):
 
 def make_crossover(parent1,
                    parent2,
-                   gene_importance=[1.] * vae_latent_vector_length):
+                   gene_importance):
     """
 
     Implements crossover between two parent individuals.
