@@ -1,11 +1,13 @@
 import random
 
 # Definition of rvGA model parameters
-latent_vector_length = 100
 population_size = 25
 max_generations = 50
+percentage_of_survived = 0.5
+
 random_seed = 2022
 random.seed(random_seed)
+
 
 # TO REMOVE
 prob_crossover = 0.8

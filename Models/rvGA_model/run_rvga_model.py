@@ -11,10 +11,10 @@ from Models.rvGA_model.rvga_functions import individual_fitness, \
     generate_population
 
 from Models.rvGA_model.rvga_variables import population_size, \
-    latent_vector_length, \
-    max_generations, \
-    prob_crossover, \
-    prob_mutation
+                                             max_generations, \
+                                             prob_crossover, \
+                                             prob_mutation, \
+                                             percentage_of_survived
 
 
 # Import of local VAE parameters
@@ -30,41 +30,74 @@ population = generate_population(latent_vectors_df=vae_latent_vector_df,
 # Generate fitness values for every individual
 fitness_values = list(map(individual_fitness, population))
 
+# Fill individual objects with fitness values
 for individual, fitness_value in zip(population, fitness_values):
     individual.fitness.values = fitness_value
 
+# Defining metrics to track during rvGA
 max_fitness_values = []
 mean_fitness_values = []
 
+# Unpacking all fitness values from individual objects in population
 fitness_values = [individual.fitness.values[0] for individual in population]
 
+'''
+--------------------------------
+GENETIC ALGORITHM IMPLEMENTATION
+--------------------------------
+'''
 
-# Genetic algorithm implementation
+# Total number of individuals counter
 total_individuals = population_size
 
+# rvGA parameters to be tuned
+population_size = population_size  # number of individuals in the initial generation (typically from 5 to 50)
+max_generations = max_generations  # maximal number of generations (typically from 10 to 100)
+percentage_of_survived = percentage_of_survived  # percentage of individuals surviving the tournament (in %)
+spectrum_proximity_percentage = 90  # preciseness of spectrum reconstruction (in %)
+
+# Initialization of generations counter
 generation_count = 0
-while max(fitness_values) < latent_vector_length and generation_count < max_generations:
+
+# Continue until either spectrum proximity reaches sufficient percentage or number of generations equals maximal
+while max(fitness_values) < (spectrum_proximity_percentage / 100) and generation_count < max_generations:
+
+    # Add a generation
     generation_count += 1
-    offspring = conduct_tournament(population, len(population))
+
+    # Picks top percentage_of_survived % of individuals from the population
+    offspring = conduct_tournament(population=population,
+                                   population_length=len(population),
+                                   survival_rate=percentage_of_survived / 100)
+
+    # Total individuals update
     total_individuals += len(offspring)
+
+    # Transfers fitness values in individual objects of the offspring
     offspring = list(map(clone, offspring))
 
+    # Crossover between adjacent individuals in the offspring
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
         if random.random() < prob_crossover:
             make_crossover(child1, child2)
 
+    # Introduces mutations to the individuals in the offspring
     for mutant in offspring:
         if random.random() < prob_mutation:
-            make_mutation(mutant, ind_prob=1.0 / latent_vector_length)
+            make_mutation(mutant, ind_prob=1.0 / vae_latent_vector_length)
 
+    # Updates the fitness values of the individuals in the offspring after crossovers and mutations
     freshFitnessValues = list(map(individual_fitness, offspring))
     for individual, fitness_value in zip(offspring, freshFitnessValues):
         individual.fitness.values = fitness_value
 
+    # Setting up a new population of parents
     population[:] = offspring
 
+    # Unpacking fitness values for a new population
     fitness_values = [ind.fitness.values[0] for ind in population]
 
+    # Tracking the intermediate results of rvGA
     max_fitness = max(fitness_values)
     mean_fitness = sum(fitness_values) / len(population)
     max_fitness_values.append(max_fitness)
