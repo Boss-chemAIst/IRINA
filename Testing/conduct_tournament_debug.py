@@ -2,7 +2,7 @@
 --------------------------------------
 Test of conduct_tournament() function
 
-Status: NOT STARTED
+Status: IN PROGRESS
 --------------------------------------
 """
 
