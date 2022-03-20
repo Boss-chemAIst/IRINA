@@ -7,6 +7,8 @@ from Models.rvGA_model.rvga_classes import *
 def generate_individual(latent_vectors_df, latent_vector_length) -> object:
     """
 
+    Generates a single individual based on gene variations.
+
     :param latent_vector_length: vector length out of VAE
     :param latent_vectors_df: N-dimensional vectors for M target meshes (M columns).
 
@@ -33,6 +35,8 @@ def generate_population(latent_vectors_df=None,
                         population_size=0):
     """
 
+    Generates population of individuals of fixed size based on variations in genes.
+
     :param latent_vectors_df: Scalar. Vector length out of VAE.
     :param latent_vector_length: DataFrame. N-dimensional vectors for M target meshes (M columns).
     :param population_size: Scalar. Number of individuals to be generated.
@@ -49,6 +53,8 @@ def generate_population(latent_vectors_df=None,
 def individual_fitness(individual):
     """
 
+    Calculates the fitness of a single individual based on COMSOL calculations.
+
     :param individual: Vector of genes of a single individual. Sent to VAE to reconstruct COMSOL-readable geometry.
 
     :return: Metrics of individual's spectrum proximity to the desired one (goes from COMSOL simulation).
@@ -62,6 +68,9 @@ def individual_fitness(individual):
 
 def gene_importance_correction(latent_vectors_df, max_mutation_increase):
     """
+
+    Based on the VAE model results, grades every individual's gene by importance correlating with its standard
+    deviation.
 
     :param max_mutation_increase: Stands for N in N-fold increased mutation rate for the least important gene.
     :param latent_vectors_df: Scalar. Vector length out of VAE.
@@ -86,16 +95,53 @@ def gene_importance_correction(latent_vectors_df, max_mutation_increase):
     return gene_importance_corr.tolist()
 
 
-def mating():
-    pass
+def mating(population):
+    """
+
+    Implements crossovers within the population and mutates the offspring.
+
+    :param population: Population to produce next generation.
+
+    :return: Mutated offspring.
+
+    Status: NOT STARTED
+
+    """
 
 
-def make_crossover(child1, child2):
-    s = random.randint(2, len(child1) - 3)
-    child1[s:], child2[s:] = child2[s:], child1[s:]
+def make_crossover(parent1, parent2):
+    """
+
+    Implements crossover between two parent individuals.
+
+    :param parent1: Individual (first parent).
+    :param parent2: Individual (second parent).
+
+    :return: Two child.
+
+    Status: NOT STARTED
+
+    """
+
+    child1, child2 = [], []
+
+    return child1, child2
 
 
 def make_mutation(mutant, ind_prob=0.01):
+    """
+
+    Introduces mutations to the offspring depending on the gene importance.
+
+    :param mutant: Individual to be mutated.
+    :param ind_prob: Standard probability of mutation.
+
+    :return: Mutant individual.
+
+    Status: NOT STARTED
+
+    """
+
     for index in range(len(mutant)):
         if random.random() < ind_prob:
             mutant[index] = 0 if mutant[index] == 1 else 1
@@ -131,6 +177,8 @@ def conduct_tournament(population, population_length, survival_rate):
 
 def clone(individual):
     """
+
+    Transfers fitness values.
 
     :param individual: Individual, which fitness values will be transferred to the same individual in the next
     generation.
