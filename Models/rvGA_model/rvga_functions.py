@@ -104,7 +104,7 @@ def conduct_tournament(population, population_length, survival_rate):
 
     :return: Offspring close to survival_rate * population_length.
 
-    Status: IN PROGRESS
+    Status: FINISHED
 
     """
 
