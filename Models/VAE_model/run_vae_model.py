@@ -8,7 +8,7 @@ from keras.losses import binary_crossentropy
 import numpy as np
 import pickle
 
-from Processing.mesh_preprocessing import x_test, x_train, y_test, y_train
+from Processing.mesh_loading import x_test, x_train, y_test, y_train
 
 latent_dim = 8
 
