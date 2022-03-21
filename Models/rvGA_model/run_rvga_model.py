@@ -1,7 +1,7 @@
 """
---------------------------------
-GENETIC ALGORITHM IMPLEMENTATION
---------------------------------
+-------------
+PREPROCESSING
+-------------
 """
 
 # Import of common libraries
