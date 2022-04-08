@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-from Models.rvGA_model.rvga_classes import *
+from Models.rvGA_model.rvga_classes import Individual
 
 
 def generate_individual(latent_vectors_df,
@@ -161,7 +161,8 @@ def make_mutation(mutant, gene_importance, gene_boundaries, ind_prob=0.01):
 
     Introduces mutations to the offspring depending on the gene importance.
 
-    :param gene_boundaries:
+    :param gene_boundaries: List of lists with 2 element-long lists for each gene representing lower (index 0) and
+    higher (index 1) boundaries.
     :param mutant: Individual to be mutated.
     :param gene_importance: List. Importance of every single gene in the individual.
     :param ind_prob: Standard probability of mutation.
