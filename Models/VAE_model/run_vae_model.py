@@ -153,7 +153,6 @@ def get_vae_latent_vectors(latent_vector_length):
     2) N vector (variances of N genes): to set the importance of each gene.
     '''
 
-    vae_latent_vector_df_all = None
-    vae_latent_vector_df_valid = None
+    vae_latent_vector_df_target = None
 
-    return vae_latent_vector_df_all, vae_latent_vector_df_valid, latent_vector_length
+    return vae_latent_vector_df_target
