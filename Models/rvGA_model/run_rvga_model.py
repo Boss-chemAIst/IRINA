@@ -1,4 +1,16 @@
-def run_genetic_algorithm(vae_latent_vector_df, vae_latent_vector_length):
+def run_genetic_algorithm(latent_vectors_target,
+                          vae_latent_vector_length,
+                          gene_boundaries,
+                          gene_importance=None,
+                          population_size=50,
+                          max_generations=50,
+                          spectrum_proximity_percentage=90,
+                          percentage_of_survived=50,
+                          prob_mutation=10,
+                          prob_crossover=80):
+
+    if gene_importance is None:
+        gene_importance = [1] * vae_latent_vector_length
 
     # Import of common libraries
     import random
@@ -11,14 +23,8 @@ def run_genetic_algorithm(vae_latent_vector_df, vae_latent_vector_length):
         make_mutation, \
         generate_population
 
-    from Models.rvGA_model.rvga_variables import population_size, \
-        max_generations, \
-        prob_crossover, \
-        prob_mutation, \
-        percentage_of_survived
-
     # Definition of population creator, working based on the data from VAE
-    population = generate_population(latent_vectors_df=vae_latent_vector_df,
+    population = generate_population(latent_vectors_df=latent_vectors_target,
                                      latent_vector_length=vae_latent_vector_length,
                                      population_size=population_size)
 
@@ -42,16 +48,6 @@ def run_genetic_algorithm(vae_latent_vector_df, vae_latent_vector_length):
     --------------------------------
     """
 
-    # Total number of individuals counter
-    total_individuals = population_size
-
-    # rvGA parameters to be tuned
-    max_generations = max_generations  # maximal number of generations (typically from 10 to 100)
-    percentage_of_survived = percentage_of_survived  # percentage of individuals surviving the tournament (in %)
-    spectrum_proximity_percentage = 90  # preciseness of spectrum reconstruction to be achieved (in %)
-    max_diff_in_mating = 2  # Stands for N in N-fold increased mutation/crossover rate for the least important gene
-    crossover_rate = 50  # Probability of crossover (in %)
-
     # Initialization of generations counter
     generation_count = 0
 
@@ -67,18 +63,18 @@ def run_genetic_algorithm(vae_latent_vector_df, vae_latent_vector_length):
                                        survival_rate=percentage_of_survived / 100)
 
         # Total individuals update
-        total_individuals += len(offspring)
+        population_size += len(offspring)
 
         # Transfers fitness values in individual objects of the offspring
         offspring = list(map(clone, offspring))
 
         # Crossover between adjacent individuals in the offspring
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
-            if random.random() < prob_crossover:
+            if random.random() < prob_crossover / 100:
                 make_crossover(parent1=child1,
                                parent2=child2,
                                gene_importance=gene_importance,
-                               crossover_rate=crossover_rate)
+                               crossover_rate=prob_crossover)
 
         # Introduces mutations to the individuals in the offspring
         for mutant in offspring:
