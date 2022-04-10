@@ -1,4 +1,1 @@
-import cmphy
-
-ses = Session()
 
