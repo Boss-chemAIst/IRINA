@@ -18,3 +18,11 @@ Features:
 - Severity, frequency, and direction of mutations depends on the gene importance and boundaries
 - Dominance in mating depends on the fitness
 - Crossover rate depends on the gene importance
+
+How to:
+-------
+
+- Check if COMSOL and Matlab is installed
+- Add '...\IRINA\Python_COMSOL_connection\software\matlab_connection\mfiles' to Matlab search path 
+  with addpath() function
+- 
