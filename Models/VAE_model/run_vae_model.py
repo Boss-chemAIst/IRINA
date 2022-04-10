@@ -19,14 +19,12 @@ def get_vae_latent_vectors(latent_vector_length):
 
     latent_dim = latent_vector_length
 
-
     def sampling(args):
         z_mean_value, z_log_v = args
         batch = K.shape(z_mean_value)[0]
         dim = K.int_shape(z_mean_value)[1]
         epsilon = K.random_normal(shape=(batch, dim))
         return z_mean_value + K.exp(0.5 * z_log_v) * epsilon
-
 
     image_size = x_train.shape[1]
 

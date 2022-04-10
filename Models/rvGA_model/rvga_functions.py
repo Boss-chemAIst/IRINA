@@ -64,7 +64,7 @@ def individual_fitness(individual):
 
     """
 
-    from Connect_with_COMSOL.Python_COMSOL_Python.individual_fitness_calculation import individual_fitness_value
+    from Python_COMSOL_connection.individual_fitness_calculation import individual_fitness_value
 
     return individual_fitness_value,
 
