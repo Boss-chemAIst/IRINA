@@ -5,11 +5,17 @@ def load_meshes():
     """
 
     import os
-    from oct2py import Oct2Py
-    oc = Oct2Py()
+    import matlab.engine
+    import pandas as pd
 
-    x_valid = oc.run('valid_mesh_generator.m')
-    x_target = oc.run('target_mesh_generator.m')
+    eng = matlab.engine.start_matlab()
+
+    """ """
+
+    eng.quit()
+
+    x_valid = pd.DataFrame()
+    x_target = pd.DataFrame()
 
     x_all = x_valid + x_target
     del x_valid
@@ -19,3 +25,6 @@ def load_meshes():
 
     x_all.to_csv(upper_directory + '\\Meshes\\all_structures.csv')
     x_target.to_csv(upper_directory + '\\Meshes\\target_structures.csv')
+
+
+load_meshes()

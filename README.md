@@ -22,7 +22,3 @@ Features:
 How to:
 -------
 
-- Check if COMSOL and Matlab is installed
-- Add '...\IRINA\Python_COMSOL_connection\software\matlab_connection\mfiles' to Matlab search path 
-  with addpath() function
-- 

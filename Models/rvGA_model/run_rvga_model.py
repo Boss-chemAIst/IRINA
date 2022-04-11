@@ -14,6 +14,7 @@ def run_genetic_algorithm(latent_vectors_target,
 
     # Import of common libraries
     import random
+    import numpy as np
 
     # Import of local rvGA parameters
     from Models.rvGA_model.rvga_functions import individual_fitness, \
@@ -23,7 +24,7 @@ def run_genetic_algorithm(latent_vectors_target,
         make_mutation, \
         generate_population
 
-    # Definition of population creator, working based on the data from VAE
+    # Population generation working based on the data from VAE
     population = generate_population(latent_vectors_df=latent_vectors_target,
                                      latent_vector_length=vae_latent_vector_length,
                                      population_size=population_size)
@@ -58,27 +59,34 @@ def run_genetic_algorithm(latent_vectors_target,
         generation_count += 1
 
         # Picks top percentage_of_survived % of individuals from the population
-        offspring = conduct_tournament(population=population,
-                                       population_length=len(population),
-                                       survival_rate=percentage_of_survived / 100)
-
-        # Total individuals update
-        population_size += len(offspring)
+        survived = conduct_tournament(population=population,
+                                      population_length=len(population),
+                                      survival_rate=percentage_of_survived / 100)
 
         # Transfers fitness values in individual objects of the offspring
-        offspring = list(map(clone, offspring))
+        survived = list(map(clone, survived))
 
-        # Crossover between adjacent individuals in the offspring
-        for child1, child2 in zip(offspring[::2], offspring[1::2]):
+        fitness_values = [individual.fitness.values[0] for individual in survived]
+        mating_prob_proportions = fitness_values / np.mean(fitness_values)
+
+        # Crossover between the survived individuals (probability of mating depends on the fitness)
+        indexes = range(len(survived))
+
+        offspring = []
+        while len(offspring) < len(population):
+            child1 = random.choices(indexes, weights=mating_prob_proportions)[0]
+            child2 = random.choices(indexes, weights=mating_prob_proportions)[0]
             if random.random() < prob_crossover / 100:
-                make_crossover(parent1=child1,
-                               parent2=child2,
+                make_crossover(parent1=survived[child1],
+                               parent2=survived[child2],
                                gene_importance=gene_importance,
                                crossover_rate=prob_crossover)
+                offspring.append(survived[child1])
+                offspring.append(survived[child2])
 
         # Introduces mutations to the individuals in the offspring
         for mutant in offspring:
-            if random.random() < prob_mutation:
+            if random.random() < prob_mutation / 100:
                 make_mutation(mutant=mutant,
                               ind_prob=1.0 / vae_latent_vector_length,
                               gene_importance=gene_importance,
