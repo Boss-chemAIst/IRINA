@@ -8,11 +8,11 @@ def load_meshes():
     import matlab.engine
     import pandas as pd
 
-    eng = matlab.engine.start_matlab()
+    eng = matlab.engine.connect_matlab(name='matlab')
 
-    """ """
-
-    eng.quit()
+    '''
+    Run COMSOL with Matlab server as administrator.
+    '''
 
     x_valid = pd.DataFrame()
     x_target = pd.DataFrame()
